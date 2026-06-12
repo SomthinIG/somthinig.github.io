@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hall of the Mountain King Pursuit</title>
+
+<style>
+body {
+    background: #111;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+canvas {
+    border: 1px solid #555;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Hall of the Mountain King Pursuit</h2>
+
+<p>
+Arrow keys move the prey.<br>
+White hunters move on song beats.<br>
+Lava slowly consumes the board until only an 8×8 area remains.
+</p>
+
+<audio id="audio" controls src="Musopen_-_In_the_Hall_Of_The_Mountain_King.ogg"></audio>
+
+<br><br>
+
+<canvas id="c" width="640" height="640"></canvas>
+
+<script>
+
+// PASTE YOUR ENTIRE BEAT ARRAY HERE
+const beats=[15.74312925170068, 16.439727891156462, 17.136326530612244, 17.832925170068027, 18.52952380952381, 19.249342403628116, 19.969160997732427, 20.688979591836734, 21.385578231292516, 22.0821768707483, 22.77877551020408, 23.475374149659864, 24.2184126984127, 24.961451247165535, 25.704489795918366, 26.447528344671202, 27.190566893424037, 27.910385487528345, 28.583764172335602, 29.257142857142856, 29.930521541950114, 30.603900226757368, 31.2540589569161, 31.997097505668933, 32.74013605442177, 33.45995464852608, 34.06367346938776, 34.73705215419501, 35.43365079365079, 36.13024943310658, 36.826848072562356, 37.52344671201814, 38.243265306122446, 38.93986394557823, 39.63646258503401, 40.333061224489796, 41.05287981859411, 41.77269841269841, 42.49251700680272, 43.21233560090703, 43.90893424036281, 44.6055328798186, 45.302131519274376, 45.99873015873016, 46.69532879818594, 47.391927437641726, 48.06530612244898, 48.738684807256234, 49.412063492063496, 50.08544217687075, 50.758820861678004, 51.43219954648526, 52.15201814058957, 52.848616780045354, 53.54521541950113, 54.24181405895692, 54.9384126984127, 55.65823129251701, 56.37804988662131, 57.09786848072562, 57.79446712018141, 58.49106575963719, 59.187664399092974, 59.97714285714286, 60.74340136054422, 61.44, 62.15981859410431, 62.87963718820862, 63.669115646258504, 64.41215419501134, 65.06231292517006, 65.7124716553288, 66.36263038548753, 67.01278911564626, 67.662947845805, 68.33632653061224, 68.98648526077098, 69.65986394557824, 70.33324263038548, 71.00662131519275, 71.65678004535147, 72.33015873015873, 72.98031746031747, 73.63047619047619, 74.30385487528345, 74.97723356009071, 75.72027210884353, 76.41687074829932, 77.15990929705215, 77.87972789115646, 78.6227664399093, 79.29614512471656, 80.2249433106576, 80.9447619047619, 81.64136054421769, 82.361179138322, 83.05777777777777, 83.75437641723356, 84.42775510204082, 85.10113378684807, 85.77451247165533, 86.44789115646259, 87.09804988662131, 87.95718820861678, 88.63056689342403, 89.30394557823129, 89.95410430839003, 90.58104308390023, 91.44018140589569, 92.25287981859411, 93.08879818594104, 93.92471655328798, 94.76063492063491, 95.57333333333334, 96.38603174603175, 97.12907029478458, 97.89532879818594, 98.63836734693878, 99.38140589569161, 100.14766439909297, 100.89070294784581, 101.65696145124717, 102.37678004535148, 103.1198185941043, 103.86285714285714, 104.58267573696145, 105.30249433106576, 106.02231292517007, 106.71891156462586, 107.46195011337869, 108.18176870748299, 108.9015873015873, 109.59818594104308, 110.29478458049887, 110.96816326530612, 111.68798185941043, 112.38458049886621, 113.081179138322, 113.75455782312925, 114.45115646258503, 115.14775510204082, 115.79791383219954, 116.4712925170068, 117.09823129251701, 117.77160997732426, 118.46820861678005, 119.11836734693877, 119.79174603174603, 120.46512471655329, 121.13850340136054, 121.76544217687075, 122.43882086167801, 123.08897959183673, 123.73913832199547, 124.41251700680272, 125.03945578231293, 125.68961451247165, 126.29333333333334, 126.94349206349206, 127.5936507936508, 128.24380952380952, 128.87074829931973, 129.4744671201814, 130.1014058956916, 130.70512471655329, 131.3320634920635, 131.9590022675737, 132.53950113378684, 133.14321995464852, 133.72371882086168, 134.30421768707484, 134.88471655328797, 135.46521541950113, 136.1618140589569, 136.7655328798186, 137.36925170068028, 137.99619047619046, 138.66956916099772, 139.38938775510204, 140.08598639455784, 141.0612244897959, 141.80426303854875, 142.52408163265306, 143.2671201814059, 143.9637188208617, 144.89251700680273, 145.6587755102041, 146.40181405895692, 147.0984126984127, 147.7950113378685, 148.46839002267575, 149.14176870748298, 149.88480725623583];
+
+
+const N = 32;
+const MIN_N = 8;
+const S = 20;
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+const audio = document.getElementById("audio");
+
+let gameOver = false;
+
+let prey = {
+    x: 16,
+    y: 16
+};
+
+let lives = 3;
+let invulnerableUntil = 0;
+
+let hunters = [
+    {x:0,y:0},{x:31,y:0},{x:0,y:31},{x:31,y:31},
+    {x:15,y:0},{x:0,y:15},{x:31,y:15},{x:15,y:31},
+    {x:7,y:0},{x:23,y:0},{x:0,y:7},{x:0,y:23},
+    {x:31,y:7},{x:31,y:23},{x:7,y:31},{x:23,y:31}
+];
+
+let beatIndex = 0;
+
+let lavaLayer = 0;
+let nextShrinkBeat = 0;
+
+const pressed = new Set();
+
+document.addEventListener("keydown", e => {
+
+    if (gameOver) return;
+
+    if (pressed.has(e.code)) return;
+    pressed.add(e.code);
+
+    let dx = 0;
+    let dy = 0;
+
+    if (e.key === "ArrowLeft")  dx = -1;
+    if (e.key === "ArrowRight") dx = 1;
+    if (e.key === "ArrowUp")    dy = -1;
+    if (e.key === "ArrowDown")  dy = 1;
+
+    const min = lavaLayer;
+    const max = N - lavaLayer - 1;
+
+    prey.x = Math.max(min, Math.min(max, prey.x + dx));
+    prey.y = Math.max(min, Math.min(max, prey.y + dy));
+});
+
+document.addEventListener("keyup", e => {
+    pressed.delete(e.code);
+});
+
+function lose(message) {
+    gameOver = true;
+    audio.pause();
+
+    ctx.fillStyle = "red";
+    ctx.font = "48px sans-serif";
+    ctx.fillText(message, 160, 320);
+}
+
+function moveHunters() {
+
+    const occupied = new Set();
+
+    for (const h of hunters) occupied.add(`${h.x},${h.y}`);
+
+    for (const h of hunters) {
+
+        occupied.delete(`${h.x},${h.y}`);
+
+        const dx = prey.x - h.x;
+        const dy = prey.y - h.y;
+
+        const candidates = [];
+
+        if (Math.abs(dx) >= Math.abs(dy)) {
+            if (dx) candidates.push({x:h.x+Math.sign(dx),y:h.y});
+            if (dy) candidates.push({x:h.x,y:h.y+Math.sign(dy)});
+        } else {
+            if (dy) candidates.push({x:h.x,y:h.y+Math.sign(dy)});
+            if (dx) candidates.push({x:h.x+Math.sign(dx),y:h.y});
+        }
+
+        for (const c of candidates) {
+            const key = `${c.x},${c.y}`;
+            if (!occupied.has(key)) {
+                h.x = c.x;
+                h.y = c.y;
+                occupied.add(key);
+                break;
+            }
+        }
+
+        occupied.add(`${h.x},${h.y}`);
+    }
+
+    const remainingSize = N - lavaLayer * 2;
+
+    let beatsPerShrink;
+    if (remainingSize > 24) beatsPerShrink = 24;
+    else if (remainingSize > 20) beatsPerShrink = 16;
+    else if (remainingSize > 16) beatsPerShrink = 12;
+    else if (remainingSize > 12) beatsPerShrink = 8;
+    else beatsPerShrink = 4;
+
+    if (beatIndex >= nextShrinkBeat + beatsPerShrink && remainingSize > MIN_N) {
+        lavaLayer++;
+        nextShrinkBeat = beatIndex;
+    }
+}
+
+function drawBoard() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let y = 0; y < N; y++) {
+        for (let x = 0; x < N; x++) {
+
+            const lava =
+                x < lavaLayer ||
+                y < lavaLayer ||
+                x >= N - lavaLayer ||
+                y >= N - lavaLayer;
+
+            if (lava) {
+                ctx.fillStyle = "#ff5500";
+                ctx.fillRect(x*S, y*S, S, S);
+            }
+
+            ctx.strokeStyle = "#555";
+            ctx.strokeRect(x*S, y*S, S, S);
+        }
+    }
+
+    if (
+        performance.now() < invulnerableUntil &&
+        Math.floor(performance.now()/100)%2
+    ) ctx.globalAlpha = 0.3;
+
+    ctx.fillStyle = "gold";
+    ctx.fillRect(prey.x*S+2,prey.y*S+2,S-4,S-4);
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = "white";
+
+    for (const h of hunters) {
+
+        ctx.fillRect(
+            h.x*S + 6,
+            h.y*S + 6,
+            S - 12,
+            S - 12
+        );
+
+        if (
+            h.x === prey.x &&
+            h.y === prey.y &&
+            performance.now() > invulnerableUntil
+        ) {
+            lives--;
+            invulnerableUntil = performance.now() + 2000;
+            prey.x = Math.floor(N/2);
+            prey.y = Math.floor(N/2);
+            if (lives <= 0) lose("CAUGHT");
+        }
+    }
+
+    if (
+        prey.x < lavaLayer ||
+        prey.y < lavaLayer ||
+        prey.x >= N - lavaLayer ||
+        prey.y >= N - lavaLayer
+    ) {
+
+        if (performance.now() > invulnerableUntil) {
+
+            lives--;
+            invulnerableUntil = performance.now() + 2000;
+
+            prey.x = Math.floor(N/2);
+            prey.y = Math.floor(N/2);
+
+            if (lives <= 0) {
+                lose("BURNED");
+            }
+        }
+    }
+
+    ctx.fillStyle = "white";
+    ctx.font = "20px sans-serif";
+
+    const currentSize = N - lavaLayer * 2;
+
+    ctx.fillText(
+        `Board: ${currentSize}×${currentSize}`,
+        10,
+        24
+    );
+
+    ctx.fillText(`Lives: ${lives}`,10,48);
+}
+
+function loop() {
+
+    if (!gameOver) {
+
+        const t = audio.currentTime;
+
+        while (
+            beatIndex < beats.length &&
+            t >= beats[beatIndex]
+        ) {
+            moveHunters();
+            beatIndex++;
+        }
+
+        drawBoard();
+
+        if (
+            beatIndex >= beats.length &&
+            !audio.paused &&
+            audio.currentTime > 0
+        ) {
+            gameOver = true;
+            ctx.fillStyle = "lime";
+            ctx.font = "48px sans-serif";
+            ctx.fillText("YOU SURVIVED",120,320);
+        }
+    }
+
+    requestAnimationFrame(loop);
+}
+
+drawBoard();
+loop();
+
+</script>
+
+</body>
+</html>
