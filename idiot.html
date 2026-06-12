@@ -1,3 +1,584 @@
-you really are an idiot...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wall Pie Dialogue</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #06070c;
+      color: #f7f7ff;
+    }
 
-Genuinely, why would you buy this.
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow-x: hidden;
+      background: radial-gradient(circle at top, rgba(134, 247, 255, 0.14), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(255, 133, 184, 0.14), transparent 18%),
+        #04050a;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+    }
+
+    #dialogue-container {
+      width: min(100%, 860px);
+      padding: 2rem;
+      border-radius: 32px;
+      background: rgba(10, 14, 28, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 32px 120px rgba(0, 0, 0, 0.38);
+      backdrop-filter: blur(24px);
+      position: relative;
+    }
+
+    #dialogue-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at top left, rgba(92, 176, 255, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255, 128, 192, 0.18), transparent 22%);
+      border-radius: inherit;
+    }
+
+    #message {
+      min-height: 170px;
+      display: grid;
+      place-items: center;
+      padding: 1.6rem 1.8rem;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #message.fancy {
+      animation: pulseBorder 2.2s ease-in-out infinite;
+      border-color: rgba(134, 247, 255, 0.3);
+    }
+
+    #message.effect-pulse {
+      animation: glowPulse 1.8s ease-in-out infinite;
+      border-color: rgba(255, 110, 190, 0.8);
+      box-shadow: 0 0 38px rgba(255, 110, 190, 0.24), inset 0 0 20px rgba(255, 255, 255, 0.08);
+    }
+
+    body.bgred {
+      background: radial-gradient(circle at top, rgba(255, 90, 90, 0.14), transparent 22%),
+        radial-gradient(circle at bottom right, rgba(180, 20, 20, 0.22), transparent 18%),
+        #120306;
+      color: #ffd8d8;
+    }
+
+    #dialogue-container.bgred {
+      background: rgba(40, 0, 0, 0.92);
+      border-color: rgba(255, 100, 100, 0.2);
+      box-shadow: 0 32px 120px rgba(100, 0, 0, 0.38);
+    }
+
+    #dialogue-container.bgred::before {
+      background: radial-gradient(circle at top left, rgba(255, 84, 84, 0.2), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255, 58, 58, 0.2), transparent 22%);
+    }
+
+    #message.bgred {
+      background: linear-gradient(180deg, rgba(255, 100, 100, 0.1), rgba(80, 0, 0, 0.35));
+      border-color: rgba(255, 118, 118, 0.35);
+      box-shadow: 0 0 40px rgba(255, 80, 80, 0.22);
+    }
+
+    #bubbleText.glitch {
+      position: relative;
+      color: #fffbff;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    #bubbleText.glitch::before,
+    #bubbleText.glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      clip: rect(0, 9999px, 0, 0);
+      opacity: 0.85;
+    }
+
+    #bubbleText.glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff56c2;
+      animation: glitchTop 2.5s infinite linear alternate-reverse;
+    }
+
+    #bubbleText.glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 #80f1ff;
+      animation: glitchBottom 3s infinite linear alternate-reverse;
+    }
+
+    #bubbleText.shake {
+      animation: shake 0.35s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(255, 110, 190, 0.18), inset 0 0 24px rgba(255, 110, 190, 0.08); }
+      50% { box-shadow: 0 0 80px rgba(255, 110, 190, 0.28), inset 0 0 32px rgba(255, 110, 190, 0.14); }
+    }
+
+    @keyframes glitchTop {
+      0% { clip: rect(2px, 9999px, 22px, 0); transform: translate(0, 0); }
+      10% { clip: rect(12px, 9999px, 28px, 0); transform: translate(-1px, -1px); }
+      20% { clip: rect(6px, 9999px, 54px, 0); transform: translate(1px, 2px); }
+      30% { clip: rect(26px, 9999px, 42px, 0); transform: translate(-2px, 0); }
+      40% { clip: rect(14px, 9999px, 64px, 0); transform: translate(1px, -1px); }
+      50% { clip: rect(24px, 9999px, 82px, 0); transform: translate(-1px, 2px); }
+      60% { clip: rect(16px, 9999px, 68px, 0); transform: translate(2px, -1px); }
+      70% { clip: rect(4px, 9999px, 38px, 0); transform: translate(-1px, 1px); }
+      80% { clip: rect(18px, 9999px, 50px, 0); transform: translate(1px, 0); }
+      90% { clip: rect(10px, 9999px, 35px, 0); transform: translate(0, -2px); }
+      100% { clip: rect(8px, 9999px, 26px, 0); transform: translate(-2px, 1px); }
+    }
+
+    @keyframes glitchBottom {
+      0% { clip: rect(72px, 9999px, 98px, 0); transform: translate(0, 0); }
+      10% { clip: rect(52px, 9999px, 90px, 0); transform: translate(2px, 1px); }
+      20% { clip: rect(64px, 9999px, 96px, 0); transform: translate(-1px, -1px); }
+      30% { clip: rect(82px, 9999px, 104px, 0); transform: translate(1px, 2px); }
+      40% { clip: rect(58px, 9999px, 86px, 0); transform: translate(-2px, 0); }
+      50% { clip: rect(74px, 9999px, 94px, 0); transform: translate(1px, -1px); }
+      60% { clip: rect(68px, 9999px, 100px, 0); transform: translate(-1px, 1px); }
+      70% { clip: rect(54px, 9999px, 92px, 0); transform: translate(1px, 0); }
+      80% { clip: rect(76px, 9999px, 108px, 0); transform: translate(-2px, 2px); }
+      90% { clip: rect(62px, 9999px, 88px, 0); transform: translate(2px, -1px); }
+      100% { clip: rect(70px, 9999px, 98px, 0); transform: translate(0, 1px); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-2px); }
+      40% { transform: translateX(2px); }
+      60% { transform: translateX(-1px); }
+      80% { transform: translateX(1px); }
+    }
+
+    @keyframes pulseBorder {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(134, 247, 255, 0.18); }
+      50% { box-shadow: 0 0 0 18px rgba(134, 247, 255, 0.03); }
+    }
+
+    .speaker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.86rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #86f7ff;
+    }
+
+    #bubbleText {
+      font-size: clamp(1rem, 1.18vw, 1.24rem);
+      line-height: 1.7;
+      text-align: center;
+      white-space: pre-line;
+      max-width: 100%;
+    }
+
+    #action {
+      margin-top: 1.6rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    textarea,
+    input[type="number"] {
+      width: 100%;
+      min-height: 110px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: #f7f7ff;
+      padding: 1rem 1.1rem;
+      font: inherit;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    input[type="number"] {
+      min-height: 56px;
+    }
+
+    textarea:focus,
+    input[type="number"]:focus {
+      border-color: rgba(134, 247, 255, 0.6);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    }
+
+    button {
+      border: none;
+      border-radius: 18px;
+      padding: 1rem 1.3rem;
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #090b12;
+      background: linear-gradient(135deg, #84f2ff, #ff9fe0);
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      box-shadow: 0 20px 40px rgba(24, 39, 77, 0.22);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.02);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #continueHint {
+      font-size: 0.92rem;
+      text-align: center;
+      opacity: 0.75;
+      color: #d8d8ff;
+    }
+
+    .status {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.72);
+      text-align: center;
+    }
+
+    .final-message {
+      color: #ff8f8f;
+      font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div id="dialogue-container">
+    <div id="message">
+      <div>
+        <div class="speaker">Dialogue</div>
+        <div id="bubbleText">Press SPACE to begin the conversation.</div>
+      </div>
+    </div>
+
+    <div id="action">
+      <textarea id="inputField" class="hidden" placeholder="Type your answer here..."></textarea>
+      <input id="numberField" class="hidden" type="number" placeholder="Enter your offer here..." />
+      <div class="button-row">
+        <button id="continueBtn" type="button">Press Space to continue</button>
+        <button id="yesBtn" type="button" class="hidden">Yes</button>
+        <button id="noBtn" type="button" class="hidden">No</button>
+      </div>
+      <div id="continueHint">Use the spacebar or click the button.</div>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        text: "So... I see that you do want to buy this wall pie.\nWe need to discuss the terms of the sale.",
+      },
+      {
+        type: "yesno",
+        text: "Just to make sure, are you sure you want to buy this wall pie? It's a big commitment, and I want to make sure you're serious about it.",
+        yesLabel: "Yes, I'm sure I want to buy the wall pie.",
+        noLabel: "No, I changed my mind about buying the wall pie.",
+        yesResult: [
+          {
+            text: "First, I need to know if you're serious about this purchase.\nWhy do you want to buy this wall pie?",
+            type: "textarea",
+            placeholder: "Type your answer here...",
+          },
+          {
+            text: "Interesting. Now, let's talk about the price. The wall pie is quite valuable, and I need to know how much you're willing to pay for it.",
+            type: "number",
+            placeholder: "Enter your offer here...",
+          },
+          {
+            text: "Okay, that's a reasonable offer.",
+          },
+          {
+            text: "Now, let's discuss the payment method.",
+          },
+          {
+            text: "I know you already chosen a subscription plan, but we are going to have to do a flat rate.",
+          },
+          {
+            text: "Our software is not set up to handle recurring payments for something like this, so we will have to do a one-time payment for the wall pie.",
+          },
+          {
+            text: "How do you plan to pay for the wall pie? Do you have cash, or would you prefer to use a digital payment method?\nDo **NOT** give personal information here.",
+            type: "textarea",
+            placeholder: "Type your answer here...",
+          },
+          {
+            text: "Great! We can proceed with the payment once we finalize the details.",
+          },
+          {
+            text: "Finally, we need to arrange for the delivery of the wall pie.\nDo you have a preferred delivery method? Would you like to pick it up yourself, or should I arrange for it to be delivered to you?\nDo **NOT** give your personal information here INCLUDING addresses and postal codes.",
+            type: "textarea",
+            placeholder: "Type your answer here...",
+          },
+          {
+            text: "Thank you for providing all the necessary information. We can now proceed with the sale of the wall pie. I will prepare the necessary documents and we can finalize the transaction.",
+          },
+          {
+            text: "Once the payment is received, I will arrange for the delivery of the wall pie to your specified address. Thank you for your interest in purchasing the wall pie, and I look forward to completing this transaction with you!",
+          },
+          {
+            type: "yesno",
+            text: "Just to make sure, you want this wall pie, right? I mean, it's a pretty big commitment, and I want to make sure you're really serious about it.",
+            yesLabel: "Yes, I'm sure I want to buy the wall pie.",
+            noLabel: "No, maybe not.",
+            yesResult: [
+              {
+                text: "Oh, I almost forgot! I need to tell you one more thing!",
+              },
+              {
+                text: "WHY DID YOU BUY THIS WALL PIE?",
+                fancy: true,
+                effects: ["glitch", "pulse", "shake", "bgred"],
+              },
+              {
+                text: "WHO ARE YOU",
+                fancy: true,
+                final: true,
+                effects: ["glitch", "pulse", "shake", "bgred"],
+              },
+            ],
+            noResult: [
+              {
+                text: "Oh, I see. Maybe the wall pie isn't for everyone. If you change your mind in the future, feel free to come back and we can discuss it again.",
+              },
+              {
+                text: "Thank you for your time. If you have any other questions or if there's anything else I can help you with, please don't hesitate to ask.",
+              },
+              {
+                text: "Thank you for cooperating with me. Have a great day!",
+                final: true,
+              },
+            ],
+          },
+        ],
+        noResult: [
+          {
+            text: "Oh, I see. Maybe the wall pie isn't for everyone. If you change your mind in the future, feel free to come back and we can discuss it again.",
+          },
+          {
+            text: "Thank you for your time. If you have any other questions or if there's anything else I can help you with, please don't hesitate to ask.",
+          },
+          {
+            text: "Thank you for cooperating with me. Have a great day!",
+            final: true,
+          },
+        ],
+      },
+    ];
+
+    let activeSteps = steps;
+    let index = 0;
+    const bubbleText = document.getElementById("bubbleText");
+    const continueBtn = document.getElementById("continueBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const inputField = document.getElementById("inputField");
+    const numberField = document.getElementById("numberField");
+    const continueHint = document.getElementById("continueHint");
+    const status = document.getElementById("status");
+    const messageContainer = document.getElementById("message");
+
+    function hideInputs() {
+      inputField.classList.add("hidden");
+      numberField.classList.add("hidden");
+      yesBtn.classList.add("hidden");
+      noBtn.classList.add("hidden");
+      inputField.value = "";
+      numberField.value = "";
+      inputField.blur();
+      numberField.blur();
+    }
+
+    function showInput(type, placeholder) {
+      hideInputs();
+      if (type === "textarea") {
+        inputField.placeholder = placeholder;
+        inputField.classList.remove("hidden");
+        setTimeout(() => inputField.focus(), 150);
+      } else if (type === "number") {
+        numberField.placeholder = placeholder;
+        numberField.classList.remove("hidden");
+        setTimeout(() => numberField.focus(), 150);
+      }
+    }
+
+    function showYesNo(step) {
+      hideInputs();
+      yesBtn.textContent = step.yesLabel || "Yes";
+      noBtn.textContent = step.noLabel || "No";
+      yesBtn.classList.remove("hidden");
+      noBtn.classList.remove("hidden");
+    }
+
+    function updateStep() {
+      const step = activeSteps[index];
+      bubbleText.textContent = step.text;
+      bubbleText.dataset.text = step.text;
+      messageContainer.classList.toggle("fancy", Boolean(step.fancy));
+      messageContainer.classList.toggle("effect-pulse", Array.isArray(step.effects) && step.effects.includes("pulse"));
+      messageContainer.classList.toggle("bgred", Array.isArray(step.effects) && step.effects.includes("bgred"));
+      document.body.classList.toggle("bgred", Array.isArray(step.effects) && step.effects.includes("bgred"));
+      bubbleText.classList.toggle("glitch", Array.isArray(step.effects) && step.effects.includes("glitch"));
+      bubbleText.classList.toggle("shake", Array.isArray(step.effects) && step.effects.includes("shake"));
+      status.textContent = step.final ? "Final prompt ahead. Brace yourself." : "";
+      continueBtn.classList.remove("hidden");
+
+      if (step.type === "textarea" || step.type === "number") {
+        showInput(step.type, step.placeholder);
+        continueBtn.textContent = "Submit answer";
+        continueHint.textContent = "Type your response and press Space or click Submit.";
+      } else if (step.type === "yesno") {
+        showYesNo(step);
+        continueBtn.classList.add("hidden");
+        continueHint.textContent = "Choose Yes or No to continue.";
+      } else {
+        hideInputs();
+        continueBtn.textContent = index === 0 ? "Start dialogue" : "Continue";
+        continueHint.textContent = index === activeSteps.length - 1 ? "This is the final message." : "Press Space or click Continue.";
+      }
+    }
+
+    function proceed() {
+      if (index >= activeSteps.length - 1) {
+        bubbleText.textContent = "The dialogue is complete. Refresh to start again.";
+        continueBtn.textContent = "Reload page";
+        continueHint.textContent = "Press the button to restart.";
+        continueBtn.onclick = () => window.location.reload();
+        hideInputs();
+        return;
+      }
+
+      index += 1;
+      updateStep();
+    }
+
+    function handleTextAction() {
+      const step = activeSteps[index];
+      if (step.type === "textarea") {
+        if (inputField.value.trim().length === 0) {
+          inputField.focus();
+          return;
+        }
+      }
+      if (step.type === "number") {
+        if (numberField.value.trim().length === 0) {
+          numberField.focus();
+          return;
+        }
+      }
+      proceed();
+    }
+
+    function handleYesNo(answer) {
+      const step = activeSteps[index];
+      if (step.type !== "yesno") {
+        return;
+      }
+
+      const branch = answer === "yes" ? step.yesResult : step.noResult;
+      if (branch && branch.length > 0) {
+        activeSteps = branch;
+        index = 0;
+        updateStep();
+        return;
+      }
+
+      proceed();
+    }
+
+    document.addEventListener("keydown", (event) => {
+      const step = activeSteps[index];
+      const isInputFocused = document.activeElement === inputField || document.activeElement === numberField;
+
+      if (step.type === "yesno") {
+        if (event.key.toLowerCase() === "y") {
+          event.preventDefault();
+          handleYesNo("yes");
+          return;
+        }
+        if (event.key.toLowerCase() === "n") {
+          event.preventDefault();
+          handleYesNo("no");
+          return;
+        }
+      }
+
+      if (event.code === "Space") {
+        if (step.type && isInputFocused) {
+          return;
+        }
+        event.preventDefault();
+        if (step.type === "textarea" || step.type === "number") {
+          handleTextAction();
+        } else {
+          proceed();
+        }
+      }
+
+      if (event.key === "Enter") {
+        if ((step.type === "textarea" || step.type === "number") && isInputFocused) {
+          event.preventDefault();
+          handleTextAction();
+        }
+      }
+    });
+
+    continueBtn.addEventListener("click", () => {
+      const step = activeSteps[index];
+      if (step.type === "textarea" || step.type === "number") {
+        handleTextAction();
+      } else {
+        proceed();
+      }
+    });
+
+    yesBtn.addEventListener("click", () => handleYesNo("yes"));
+    noBtn.addEventListener("click", () => handleYesNo("no"));
+
+    updateStep();
+  </script>
+</body>
+</html>
