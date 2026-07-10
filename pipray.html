@@ -78,7 +78,40 @@
 
         <h1> Subscribe </h1>
         <h3> To be one with the Wall Pi is more than to just acknolage it, support the Wall Pi</h3>
+<div id="verse-title">The Daily Wall Pi Verse</div>
+<div id="verse-value">Loading...</div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+    // --- CONFIGURATION SETUP WITH YOUR PROJECT DETAILS ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyB143NPvdpuK8QxpXFH1bdGU2OfyTRy7HI",
+        databaseURL: "https://bibleofwallpi-default-rtdb.firebaseio.com/",
+    };
+    // --- END OF CONFIGURATION ---
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Change '/verse' below to match whatever key your verse text is stored under
+    const verseRef = database.ref('/wall_pi_verses');
+
+    // Update verse in the widget in real-time
+    verseRef.on('value', (snapshot) => {
+        const verse = snapshot.val();
+
+        if (verse !== null && verse !== undefined) {
+            document.getElementById('verse-value').textContent = verse;
+        } else {
+            document.getElementById('verse-value').textContent = "N/A";
+        }
+    }, (error) => {
+        console.error("Firebase read failed: ", error);
+        document.getElementById('verse-value').textContent = "Error";
+    });
+</script>
         <ul class="subscription-list">
             <li class="subscription-item">
                 <div class="plan-info">
