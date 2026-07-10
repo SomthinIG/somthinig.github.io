@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
      <link rel="icon" href="Raspberrry_pi_logo_holy.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>This is my website ig</title>
+    <title>Pi Pray - Temple of the Wall Pi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             background-image: url('holywallpaper.png');
@@ -68,6 +70,55 @@
         .continue-btn:hover {
             background-color: #a01239;
         }
+
+        /* Verse widget styling */
+        #wallpi-verse-widget {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        #verse-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #d4af37;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        #verse-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.6em;
+            font-weight: 500;
+            line-height: 1.6;
+            color: #2c2c2c;
+            position: relative;
+            padding: 0 30px;
+        }
+
+        #verse-value::before {
+            content: "\201C";
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-style: normal;
+            color: #d4af37;
+            vertical-align: -0.3em;
+            margin-right: 4px;
+        }
+
+        #verse-value::after {
+            content: "\201D";
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-style: normal;
+            color: #d4af37;
+            vertical-align: -0.3em;
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body>
@@ -76,64 +127,43 @@
         <h2> About </h2>
         <h3>The Wall Pi is more than just a cheap computer taped to the wall by an idiot. It is a holy relic blessed by the gods of Tape</h3>
 
+        <!-- Verse widget now sits here, above the Subscribe section -->
+        <div id="wallpi-verse-widget">
+            <div id="verse-title">The Daily Wall Pi Verse</div>
+            <div id="verse-value">Loading...</div>
+        </div>
+
         <h1> Subscribe </h1>
         <h3> To be one with the Wall Pi is more than to just acknolage it, support the Wall Pi</h3>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-<style>
-    #wallpi-verse-widget {
-        text-align: center;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 30px 20px;
-    }
-
-    #verse-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.6em;
-        font-weight: 700;
-        letter-spacing: 1px;
-        color: #d4af37;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-    }
-
-    #verse-value {
-        font-family: 'Cormorant Garamond', serif;
-        font-style: italic;
-        font-size: 1.6em;
-        font-weight: 500;
-        line-height: 1.6;
-        color: #2c2c2c;
-        position: relative;
-        padding: 0 30px;
-    }
-
-    #verse-value::before {
-        content: "\201C";
-        font-family: 'Playfair Display', serif;
-        font-size: 1.4em;
-        font-style: normal;
-        color: #d4af37;
-        vertical-align: -0.3em;
-        margin-right: 4px;
-    }
-
-    #verse-value::after {
-        content: "\201D";
-        font-family: 'Playfair Display', serif;
-        font-size: 1.4em;
-        font-style: normal;
-        color: #d4af37;
-        vertical-align: -0.3em;
-        margin-left: 4px;
-    }
-</style>
-
-<div id="wallpi-verse-widget">
-    <div id="verse-title">The Daily Wall Pi Verse</div>
-    <div id="verse-value">Loading...</div>
-</div>
+        <ul class="subscription-list">
+            <li class="subscription-item">
+                <div class="plan-info">
+                    <span class="plan-name">Pi Pray Ultimate</span> - $40/m
+                </div>
+                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
+            </li>
+            <li class="subscription-item">
+                <div class="plan-info">
+                    <span class="plan-name">Pi Pray Plus</span> - $25/m
+                </div>
+                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
+            </li>
+            <li class="subscription-item">
+                <div class="plan-info">
+                    <span class="plan-name">Pi Pray Basic</span> - $15/m
+                </div>
+                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
+            </li>
+            <li class="subscription-item">
+                <div class="plan-info">
+                    <span class="plan-name">Pi Pray Peasant</span> - $10/m
+                </div>
+                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
+            </li>
+        </ul>
+<p>This website is for entertainment purposes only, the Wall pi (and its services) are satire and not to be taken seriously. Don't sue me pls. </p>
+    </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -166,33 +196,5 @@
         document.getElementById('verse-value').textContent = "Error";
     });
 </script>
-        <ul class="subscription-list">
-            <li class="subscription-item">
-                <div class="plan-info">
-                    <span class="plan-name">Pi Pray Ultimate</span> - $40/m
-                </div>
-                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
-            </li>
-            <li class="subscription-item">
-                <div class="plan-info">
-                    <span class="plan-name">Pi Pray Plus</span> - $25/m
-                </div>
-                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
-            </li>
-            <li class="subscription-item">
-                <div class="plan-info">
-                    <span class="plan-name">Pi Pray Basic</span> - $15/m
-                </div>
-                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
-            </li>
-            <li class="subscription-item">
-                <div class="plan-info">
-                    <span class="plan-name">Pi Pray Peasant</span> - $10/m
-                </div>
-                <a href="https://somthinig.github.io/idiot.html" class="continue-btn">Continue</a>
-            </li>
-        </ul>
-<p>This website is for entertainment purposes only, the Wall pi (and its services) are satire and not to be taken seriously. Don't sue me pls. </p>
-    </div>
 </body>
 </html>
